@@ -9,7 +9,6 @@
 
     <EditText
         android:id="@+id/login_email"
-        android:paddingLeft="20dp"
         android:layout_width="347dp"
         android:layout_height="48dp"
         android:layout_alignParentStart="true"
@@ -21,11 +20,9 @@
         android:ems="10"
         android:hint="Email..."
         android:inputType="textEmailAddress"
-        android:background="@drawable/inputs"
-        android:textColorHint="#676564" />
+        android:textColorHint="#FFFFFFFF" />
 
     <EditText
-        android:paddingLeft="20dp"
         android:id="@+id/login_password"
         android:layout_width="347dp"
         android:layout_height="48dp"
@@ -33,10 +30,10 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
+        android:ems="10"
         android:hint="Contraseña..."
-        android:background="@drawable/inputs"
         android:inputType="textPassword"
-        android:textColorHint="#676564" />
+        android:textColorHint="#FFFFFF" />
 
     <Button
         android:id="@+id/login_button"
