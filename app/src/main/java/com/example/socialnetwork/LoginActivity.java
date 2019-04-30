@@ -55,6 +55,12 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
     private void UserLogingIn() {
         String loginEmail = userEmail.getText().toString();
         String loginPassword = userPassword.getText().toString();
