@@ -18,8 +18,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import org.w3c.dom.Text;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.HashMap;
 
@@ -34,6 +37,7 @@ public class SetupActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private DatabaseReference usersRef;
+    private StorageReference userProfilePicRef;
 
     String currentUserId;
     final static int gallery_pic = 1;
@@ -54,6 +58,7 @@ public class SetupActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUserId = mAuth.getCurrentUser().getUid();
         usersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserId);
+        userProfilePicRef = FirebaseStorage.getInstance().getReference().child("Profile Images");
 
 
         saveInformationButton.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +87,52 @@ public class SetupActivity extends AppCompatActivity {
         if (requestCode==gallery_pic && resultCode==RESULT_OK && data!=null){
             Uri imageUri = data.getData();
 
+            CropImage.activity(imageUri).setGuidelines(CropImageView.Guidelines.ON)
+                    .setAspectRatio(1, 1)
+                    .start(this);
+        }
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+            if (resultCode == RESULT_OK){
+
+                loadingBar.setTitle("Guardando imagen de perfil...");
+                loadingBar.setMessage("por favor, espera unos segundos");
+                loadingBar.show();
+                loadingBar.setCanceledOnTouchOutside(true);
+
+                Uri resultUri = result.getUri();
+                StorageReference filePath = userProfilePicRef.child(currentUserId + ".jpg");
+                filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText(SetupActivity.this, "Foto de perfil actualizada correctamente", Toast.LENGTH_SHORT).show();
+
+                            final String downloadUrl = userProfilePicRef.getDownloadUrl().toString();
+                            usersRef.child("profileimage").setValue(downloadUrl).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()){
+                                        Intent setupIntent = new Intent (SetupActivity.this, SetupActivity.class);
+                                        startActivity(setupIntent);
+                                        Toast.makeText(SetupActivity.this, "Imagen guardada en la firebase correctamente", Toast.LENGTH_SHORT).show();
+                                        loadingBar.dismiss();
+                                    } else {
+                                        String error = task.getException().getMessage();
+                                        Toast.makeText(SetupActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+                                        loadingBar.dismiss();
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            } else {
+                Toast.makeText(this, "Error: La imagen no se puede recortar, prueba de nuevo.", Toast.LENGTH_SHORT).show();
+                loadingBar.dismiss();
+            }
         }
     }
 
