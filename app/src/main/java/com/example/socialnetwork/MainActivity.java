@@ -13,6 +13,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,6 +24,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,8 +36,13 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView postList;
     private Toolbar mToolbar;
 
+    private CircleImageView navProfilePic;
+    private TextView navUsername;
+    private ImageButton addNewPost;
+
     private FirebaseAuth mAuth;
     private DatabaseReference usersRef;
+    private String currentUserId;
 
 
     @Override
@@ -42,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        currentUserId = mAuth.getCurrentUser().getUid();
 
         mToolbar = findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
@@ -52,8 +63,36 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         navigationView = findViewById(R.id.navigation_view);
         View navView = navigationView.inflateHeaderView(R.layout.navigation_header);
+        navProfilePic = navView.findViewById(R.id.nav_profile_pic);
+        navUsername = navView.findViewById(R.id.nav_user_full_name);
+
+        addNewPost = findViewById(R.id.add_new_post_button);
+
+        usersRef.child(currentUserId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    if (dataSnapshot.hasChild("username")){
+                        String userName = dataSnapshot.child("username").getValue().toString();
+                        navUsername.setText(userName);
+                    }
+                    if (dataSnapshot.hasChild("profileimage")){
+                        String image = dataSnapshot.child("profileimage").getValue().toString();
+                        Picasso.get().load(image).placeholder(R.drawable.profile_icon).into(navProfilePic);
+                    } else {
+                        Toast.makeText(MainActivity.this, "El usuario no existe", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -62,6 +101,19 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        addNewPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendUserToPostActivity();
+            }
+        });
+    }
+
+    private void sendUserToPostActivity() {
+        Intent addNewPostIntent = new Intent(MainActivity.this, PostActivity.class);
+        startActivity(addNewPostIntent);
+        finish();
     }
 
 
@@ -122,6 +174,9 @@ public class MainActivity extends AppCompatActivity {
     private void UserMenuSelector(MenuItem menuItem) {
 
         switch (menuItem.getItemId()){
+            case R.id.nav_post:
+                sendUserToPostActivity();
+                break;
             case R.id.nav_profile:
                 Toast.makeText(this, "Perfil", Toast.LENGTH_SHORT).show();
                 break;

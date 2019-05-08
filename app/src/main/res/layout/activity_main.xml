@@ -26,9 +26,23 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/all_users_post_list"
                 android:layout_width="match_parent"
-                android:layout_height="675dp"
-                android:layout_alignStart="@+id/main_container" />
+                android:layout_height="match_parent"
+                android:layout_alignStart="@+id/main_container"
+                />
         </FrameLayout>
+
+        <ImageButton
+            android:id="@+id/add_new_post_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="8dp"
+            android:background="@color/colorPrimary"
+            android:baselineAlignBottom="false"
+            android:focusableInTouchMode="false"
+            android:scaleType="centerCrop"
+            android:src="@drawable/add_post_high" />
     </RelativeLayout>
 
     <android.support.design.widget.NavigationView

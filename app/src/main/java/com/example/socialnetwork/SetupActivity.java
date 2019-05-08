@@ -14,13 +14,18 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -78,6 +83,25 @@ public class SetupActivity extends AppCompatActivity {
             }
         });
 
+        usersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    if (dataSnapshot.hasChild("profileimage")){
+                        String image = dataSnapshot.child("profileimage").getValue().toString();
+                        Picasso.get().load(image).placeholder(R.drawable.profile).into(profileImage);
+                    } else {
+                        Toast.makeText(SetupActivity.this, "No existe la imagen de perfil. Por favor, cárgala de nuevo.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     @Override
@@ -110,20 +134,26 @@ public class SetupActivity extends AppCompatActivity {
                         if (task.isSuccessful()){
                             Toast.makeText(SetupActivity.this, "Foto de perfil actualizada correctamente", Toast.LENGTH_SHORT).show();
 
-                            final String downloadUrl = userProfilePicRef.getDownloadUrl().toString();
-                            usersRef.child("profileimage").setValue(downloadUrl).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                            userProfilePicRef.child(currentUserId + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()){
-                                        Intent setupIntent = new Intent (SetupActivity.this, SetupActivity.class);
-                                        startActivity(setupIntent);
-                                        Toast.makeText(SetupActivity.this, "Imagen guardada en la firebase correctamente", Toast.LENGTH_SHORT).show();
-                                        loadingBar.dismiss();
-                                    } else {
-                                        String error = task.getException().getMessage();
-                                        Toast.makeText(SetupActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
-                                        loadingBar.dismiss();
-                                    }
+                                public void onSuccess(Uri uri) {
+                                    String downloadUrl = uri.toString();
+                                    usersRef.child("profileimage").setValue(downloadUrl).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()){
+                                                Intent setupIntent = new Intent (SetupActivity.this, SetupActivity.class);
+                                                startActivity(setupIntent);
+                                                Toast.makeText(SetupActivity.this, "Imagen guardada en la firebase correctamente", Toast.LENGTH_SHORT).show();
+                                                loadingBar.dismiss();
+                                            } else {
+                                                String error = task.getException().getMessage();
+                                                Toast.makeText(SetupActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+                                                loadingBar.dismiss();
+                                            }
+                                        }
+                                    });
                                 }
                             });
                         }
