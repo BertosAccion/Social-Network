@@ -81,8 +81,7 @@ public class MainActivity extends AppCompatActivity {
                     if (dataSnapshot.hasChild("username")){
                         String userName = dataSnapshot.child("username").getValue().toString();
                         navUsername.setText(userName);
-                    }
-                    if (dataSnapshot.hasChild("profileimage")){
+                    } else if (dataSnapshot.hasChild("profileimage")){
                         String image = dataSnapshot.child("profileimage").getValue().toString();
                         Picasso.get().load(image).placeholder(R.drawable.profile_icon).into(navProfilePic);
                     } else {

@@ -10,4 +10,49 @@
         android:id="@+id/update_post_page_toolbar"
         layout="@layout/app_bar_layout"/>
 
+    <EditText
+        android:id="@+id/post"
+        android:layout_width="350dp"
+        android:layout_height="130dp"
+        android:layout_below="@+id/update_post_page_toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="¿Cómo van tus aventuras?"
+        android:inputType="textMultiLine" />
+
+    <Button
+        android:id="@+id/send_post_button"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="257dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/inputs"
+        android:text="Postear" />
+
+    <ImageButton
+        android:id="@+id/add_photo_button"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="339dp"
+        android:layout_marginTop="64dp"
+        android:background="@android:color/white"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/add_post" />
+
+    <ImageView
+        android:id="@+id/chosen_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="245dp"
+        app:srcCompat="@drawable/select_image" />
+
 </RelativeLayout>
