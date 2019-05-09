@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference usersRef;
     private String currentUserId;
 
-
+    private RelativeLayout rl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         View navView = navigationView.inflateHeaderView(R.layout.navigation_header);
         navProfilePic = navView.findViewById(R.id.nav_profile_pic);
         navUsername = navView.findViewById(R.id.nav_user_full_name);
+        rl = navView.findViewById(R.id.layout_header);
 
         addNewPost = findViewById(R.id.add_new_post_button);
 
@@ -137,6 +140,15 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.hasChild(current_user_id)){
                     SendUserToSetupActivity();
+                } else {
+                    String team = dataSnapshot.child(current_user_id).child("team").getValue().toString();
+                    if (team.equals("Sabiduría")){
+                        rl.setBackgroundResource(R.drawable.team_mystic);
+                    } else if (team.equals("Instinto")){
+                        rl.setBackgroundResource(R.drawable.team_instinct);
+                    } else if (team.equals("Valor")){
+                        rl.setBackgroundResource(R.drawable.team_valor);
+                    }
                 }
             }
 
@@ -150,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
     private void SendUserToSetupActivity() {
         Intent setupIntent = new Intent(MainActivity.this, SetupActivity.class);
         setupIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        setupIntent.putExtra("layout", "1");
         startActivity(setupIntent);
         finish();
 

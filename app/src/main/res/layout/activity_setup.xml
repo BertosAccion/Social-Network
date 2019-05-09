@@ -60,12 +60,25 @@
 
     <Button
         android:id="@+id/save_setup_info"
-        android:background="@drawable/inputs"
-        android:layout_width="120dp"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/setup_country"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="112dp"
+        android:background="@drawable/inputs"
         android:text="Guardar" />
+
+    <Spinner
+        android:id="@+id/team_spinner"
+        android:layout_below="@+id/setup_country"
+        android:layout_marginTop="25dp"
+        android:layout_width="240dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="#FCFFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:layout_height="40dp"
+        android:entries="@array/teams"
+        android:prompt="@string/team_prompt"
+        android:popupBackground="@color/colorPrimary"/>
 
 </RelativeLayout>

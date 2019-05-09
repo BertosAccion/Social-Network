@@ -2,4 +2,12 @@
     <string name="app_name">Social Network</string>
     <string name="drawer_open">Drawer open</string>
     <string name="drawer_close">Drawer close</string>
+
+    <string name="team_prompt">Elige tu equipo...</string>
+    <string-array name="teams">
+        <item><font fgcolor="#FFFFFF">Elige tu equipo...</font></item>
+        <item><font fgcolor='#FFFFFF'>Sabiduría</font></item>
+        <item><font fgcolor='#FFFFFF'>Instinto</font></item>
+        <item><font fgcolor='#FFFFFF'>Valor</font></item>
+    </string-array>
 </resources>

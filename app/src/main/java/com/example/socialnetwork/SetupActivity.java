@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,6 +31,7 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.HashMap;
+import java.util.Set;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -39,6 +41,7 @@ public class SetupActivity extends AppCompatActivity {
     private Button saveInformationButton;
     private CircleImageView profileImage;
     private ProgressDialog loadingBar;
+    private Spinner teamSpinner;
 
     private FirebaseAuth mAuth;
     private DatabaseReference usersRef;
@@ -57,6 +60,7 @@ public class SetupActivity extends AppCompatActivity {
         countryName = findViewById(R.id.setup_country);
         saveInformationButton = findViewById(R.id.save_setup_info);
         profileImage = findViewById(R.id.setup_user_profile_pic);
+        teamSpinner = findViewById(R.id.team_spinner);
 
         loadingBar = new ProgressDialog(this);
 
@@ -133,8 +137,6 @@ public class SetupActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                         if (task.isSuccessful()){
                             Toast.makeText(SetupActivity.this, "Foto de perfil actualizada correctamente", Toast.LENGTH_SHORT).show();
-
-
                             userProfilePicRef.child(currentUserId + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
@@ -143,8 +145,8 @@ public class SetupActivity extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()){
-                                                Intent setupIntent = new Intent (SetupActivity.this, SetupActivity.class);
-                                                startActivity(setupIntent);
+                                                //Intent setupIntent = new Intent (SetupActivity.this, SetupActivity.class);
+                                                //startActivity(setupIntent);
                                                 Toast.makeText(SetupActivity.this, "Imagen guardada en la firebase correctamente", Toast.LENGTH_SHORT).show();
                                                 loadingBar.dismiss();
                                             } else {
@@ -170,6 +172,7 @@ public class SetupActivity extends AppCompatActivity {
         String username = userName.getText().toString();
         String fullname = fullName.getText().toString();
         String country = countryName.getText().toString();
+        String team = teamSpinner.getSelectedItem().toString();
 
         if (TextUtils.isEmpty(username)){
             Toast.makeText(this, "Por favor, escriba su nombre", Toast.LENGTH_SHORT).show();
@@ -177,7 +180,10 @@ public class SetupActivity extends AppCompatActivity {
             Toast.makeText(this, "Por favor, escriba su apellido", Toast.LENGTH_SHORT).show();
         }else if (TextUtils.isEmpty(country)){
             Toast.makeText(this, "Por favor, escriba su país de nacimiento", Toast.LENGTH_SHORT).show();
+        } else if (team.equals(teamSpinner.getItemAtPosition(0).toString())) {
+            Toast.makeText(this, "Por favor, selecciona tu equipo de Pokémon GO", Toast.LENGTH_SHORT).show();
         } else {
+
             loadingBar.setTitle("Guardando información...");
             loadingBar.setMessage("por favor, espera unos segundos");
             loadingBar.show();
@@ -187,10 +193,10 @@ public class SetupActivity extends AppCompatActivity {
             userMap.put("username", username);
             userMap.put("fullname", fullname);
             userMap.put("country", country);
-            userMap.put("status", "default status value ^^");
             userMap.put("gender", "default gender value ^^");
             userMap.put("dob", "default date of birth value ^^");
-            userMap.put("relationshipstatus", "default relationship status value ^^");
+            userMap.put("level", "default level value ^^");
+            userMap.put("team", team);
             usersRef.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
                 @Override
                 public void onComplete(@NonNull Task task) {
