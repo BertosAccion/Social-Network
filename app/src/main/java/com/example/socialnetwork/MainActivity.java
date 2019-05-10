@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -147,6 +148,8 @@ public class MainActivity extends AppCompatActivity {
                         rl.setBackgroundResource(R.drawable.team_instinct);
                     } else if (team.equals("Valor")){
                         rl.setBackgroundResource(R.drawable.team_valor);
+                    } else if (TextUtils.isEmpty(team)){
+                        rl.setBackgroundResource(R.drawable.header);
                     }
                 }
             }
