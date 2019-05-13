@@ -97,6 +97,8 @@ public class MainActivity extends AppCompatActivity {
         //postList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(true);
+        linearLayoutManager.setReverseLayout(true);
+
         postList.setLayoutManager(linearLayoutManager);
 
         addNewPost = findViewById(R.id.add_new_post_button);
