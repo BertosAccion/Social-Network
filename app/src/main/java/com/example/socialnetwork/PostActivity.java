@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
@@ -35,7 +36,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 public class PostActivity extends AppCompatActivity {
@@ -101,8 +104,8 @@ public class PostActivity extends AppCompatActivity {
                 SimpleDateFormat currentDate = new SimpleDateFormat("dd-MM-yyyy");
                 saveCurrentDate = currentDate.format(date.getTime());
 
-                Calendar time = Calendar.getInstance();
-                SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm");
+                Date time = Calendar.getInstance().getTime();
+                SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss");
                 saveCurrentTime = currentTime.format(time.getTime());
 
                 postRandomName = saveCurrentDate + saveCurrentTime;
@@ -117,6 +120,8 @@ public class PostActivity extends AppCompatActivity {
         postDescription = textPost.getText().toString();
         if (imageUri != null) {
             saveImgToStorage();
+        } else {
+            savingToDatabase();
         }
         if (TextUtils.isEmpty(postDescription) && imageUri == null) {
             Toast.makeText(this, "Introduce texto o imagen para el post", Toast.LENGTH_SHORT).show();
@@ -125,36 +130,28 @@ public class PostActivity extends AppCompatActivity {
             loadingBar.setMessage("por favor, espera unos segundos");
             loadingBar.show();
             loadingBar.setCanceledOnTouchOutside(true);
-
-            savingToDatabase();
         }
 
 
     }
 
     private void saveImgToStorage() {
-        StorageReference filePath = postImageReference.child("Post Images").child(imageUri.getLastPathSegment() + postRandomName + ".jpg");
-        filePath.putFile(imageUri);
-
-    /*.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+        final StorageReference filePath = postImageReference.child("Post Images").child(imageUri.getLastPathSegment() + postRandomName + ".jpg");
+        filePath.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                 if (task.isSuccessful()) {
-                    //Toast.makeText(PostActivity.this, "Publicado correctamente", Toast.LENGTH_SHORT).show();
-                    postImageReference.child("Profile Images").child(imageUri.getLastPathSegment() + postRandomName + ".jpg")
-                            .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    //downloadUrl = filePath.getDownloadUrl().toString()
+                    filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
                             downloadUrl = uri.toString();
+                            savingToDatabase();
                         }
                     });
-                } else {
-                    String error = task.getException().getMessage();
-                    Toast.makeText(PostActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
                 }
             }
-        });*/
-
+        });
     }
 
 
@@ -165,11 +162,18 @@ public class PostActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     String username = dataSnapshot.child("username").getValue().toString();
                     String profileImage = dataSnapshot.child("profileimage").getValue().toString();
+                    String timeZone = Calendar.getInstance().getTimeZone().getDisplayName();
                     HashMap postMap = new HashMap();
                     postMap.put("uid", current_user_id);
                     postMap.put("date", saveCurrentDate);
                     postMap.put("time", saveCurrentTime);
-                    postMap.put("description", postDescription);
+                    postMap.put("timezone", timeZone);
+                    if (!TextUtils.isEmpty(postDescription)) {
+                        postMap.put("description", postDescription);
+                    }
+                    if (downloadUrl != null) {
+                        postMap.put("postimage", downloadUrl);
+                    }
                     postMap.put("username", username);
                     postMap.put("profileimage", profileImage);
 
@@ -178,17 +182,7 @@ public class PostActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task task) {
                             if (task.isSuccessful()) {
                                 Toast.makeText(PostActivity.this, "Publicado correctamente", Toast.LENGTH_SHORT).show();
-                                if (imageUri != null) {
-                                    final DatabaseReference postImgRef = postsRef.child("postimage");
-                                    postImageReference.child("Profile Images").child(imageUri.getLastPathSegment() + postRandomName + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                        @Override
-                                        public void onSuccess(Uri uri) {
-                                            downloadUrl = uri.toString();
-                                            postImgRef.setValue(downloadUrl);
-                                        }
-                                    });
-                                    loadingBar.dismiss();
-                                }
+                                loadingBar.dismiss();
                             } else {
                                 String error = task.getException().getMessage();
                                 Toast.makeText(PostActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();

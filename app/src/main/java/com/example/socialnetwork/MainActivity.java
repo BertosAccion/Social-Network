@@ -9,25 +9,36 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -39,15 +50,20 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView postList;
     private Toolbar mToolbar;
 
+    public ArrayList<Posts> posts;
+
     private CircleImageView navProfilePic;
     private TextView navUsername;
     private ImageButton addNewPost;
 
     private FirebaseAuth mAuth;
     private DatabaseReference usersRef;
+    public DatabaseReference postsRef;
     private String currentUserId;
+    public MyAdapter adapter;
 
     private RelativeLayout rl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        postsRef = FirebaseDatabase.getInstance().getReference().child("Posts");
         currentUserId = mAuth.getCurrentUser().getUid();
 
         mToolbar = findViewById(R.id.main_page_toolbar);
@@ -73,21 +90,62 @@ public class MainActivity extends AppCompatActivity {
         navUsername = navView.findViewById(R.id.nav_user_full_name);
         rl = navView.findViewById(R.id.layout_header);
 
+        posts = new ArrayList<Posts>();
+        postList = findViewById(R.id.all_users_post_list);
+        postList.setLayoutManager(new LinearLayoutManager(this));
+
+        //postList.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setStackFromEnd(true);
+        postList.setLayoutManager(linearLayoutManager);
+
         addNewPost = findViewById(R.id.add_new_post_button);
+
+        postsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+                    Posts post = dataSnapshot1.getValue(Posts.class);
+                    posts.add(post);
+                }
+
+                adapter = new MyAdapter(MainActivity.this, posts);
+                postList.setAdapter(adapter);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(MainActivity.this, "Oops... algo ha ido mal", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         usersRef.child(currentUserId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
-                    if (dataSnapshot.hasChild("username")){
+                if (dataSnapshot.exists()) {
+                    if (dataSnapshot.hasChild("username")) {
                         String userName = dataSnapshot.child("username").getValue().toString();
                         navUsername.setText(userName);
-                    } else if (dataSnapshot.hasChild("profileimage")){
+                    }
+                    if (dataSnapshot.hasChild("profileimage")) {
                         String image = dataSnapshot.child("profileimage").getValue().toString();
                         Picasso.get().load(image).placeholder(R.drawable.profile_icon).into(navProfilePic);
-                    } else {
-                        Toast.makeText(MainActivity.this, "El usuario no existe", Toast.LENGTH_SHORT).show();
                     }
+                    if (dataSnapshot.hasChild("team")) {
+                        String team = dataSnapshot.child("team").getValue().toString();
+                        if (team.equals("Sabiduría")) {
+                            rl.setBackgroundResource(R.drawable.team_mystic);
+                        } else if (team.equals("Instinto")) {
+                            rl.setBackgroundResource(R.drawable.team_instinct);
+                        } else if (team.equals("Valor")) {
+                            rl.setBackgroundResource(R.drawable.team_valor);
+                        } else if (TextUtils.isEmpty(team)) {
+                            rl.setBackgroundResource(R.drawable.header);
+                        }
+                    }
+                } else {
+                    Toast.makeText(MainActivity.this, "El usuario no existe", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -125,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser == null){
+        if (currentUser == null) {
             SendUserToLogin();
         } else {
             CheckUserExistence();
@@ -138,19 +196,8 @@ public class MainActivity extends AppCompatActivity {
         usersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.hasChild(current_user_id)){
+                if (!dataSnapshot.hasChild(current_user_id)) {
                     SendUserToSetupActivity();
-                } else {
-                    String team = dataSnapshot.child(current_user_id).child("team").getValue().toString();
-                    if (team.equals("Sabiduría")){
-                        rl.setBackgroundResource(R.drawable.team_mystic);
-                    } else if (team.equals("Instinto")){
-                        rl.setBackgroundResource(R.drawable.team_instinct);
-                    } else if (team.equals("Valor")){
-                        rl.setBackgroundResource(R.drawable.team_valor);
-                    } else if (TextUtils.isEmpty(team)){
-                        rl.setBackgroundResource(R.drawable.header);
-                    }
                 }
             }
 
@@ -180,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if(actionBarDrawerToggle.onOptionsItemSelected(item)){
+        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -188,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void UserMenuSelector(MenuItem menuItem) {
 
-        switch (menuItem.getItemId()){
+        switch (menuItem.getItemId()) {
             case R.id.nav_post:
                 sendUserToPostActivity();
                 break;
