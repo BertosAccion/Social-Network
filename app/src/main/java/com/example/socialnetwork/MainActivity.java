@@ -36,8 +36,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 import java.util.TimeZone;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -52,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
     public ArrayList<Posts> posts;
 
-    private CircleImageView navProfilePic;
+    private CircleImageView navProfilePic, postProfilePic;
     private TextView navUsername;
     private ImageButton addNewPost;
 
@@ -92,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
         posts = new ArrayList<Posts>();
         postList = findViewById(R.id.all_users_post_list);
+        postProfilePic = postList.findViewById(R.id.post_profile_image);
         postList.setLayoutManager(new LinearLayoutManager(this));
 
         //postList.setHasFixedSize(true);
@@ -106,14 +110,47 @@ public class MainActivity extends AppCompatActivity {
         postsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     Posts post = dataSnapshot1.getValue(Posts.class);
                     posts.add(post);
                 }
 
-                adapter = new MyAdapter(MainActivity.this, posts);
+                ArrayList<Posts> arrangedPosts = arrangePosts(posts);
+
+                adapter = new MyAdapter(MainActivity.this, arrangedPosts);
                 postList.setAdapter(adapter);
 
+                /*for (Posts urlProfile : arrangedPosts){
+                    postProfilePic.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            sendUserToProfileActivity("DDDD");
+                        }
+                    });
+                }*/
+
+            }
+
+            private ArrayList<Posts> arrangePosts(ArrayList<Posts> posts) {
+                ArrayList<String> arrangeDateTime = new ArrayList<>();
+                for (Posts post : posts){
+                    String combo = post.getDate() + " " + post.getTime();
+                    arrangeDateTime.add(combo);
+                }
+                Collections.sort(arrangeDateTime);
+                System.out.println(arrangeDateTime);
+
+                ArrayList<Posts> arrangedPosts = new ArrayList<>();
+                for (String dateTime : arrangeDateTime){
+                    String[] aux = dateTime.split(" ");
+                    for(Posts post : posts){
+                        if (aux[0].equals(post.getDate()) && aux[1].equals(post.getTime())){
+                            arrangedPosts.add(post);
+                        }
+                    }
+                }
+
+                return arrangedPosts;
             }
 
             @Override
@@ -242,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
                 sendUserToPostActivity();
                 break;
             case R.id.nav_profile:
-                Toast.makeText(this, "Perfil", Toast.LENGTH_SHORT).show();
+                sendUserToProfileActivity(currentUserId);
                 break;
 
             case R.id.nav_home:
@@ -272,5 +309,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    public void sendUserToProfileActivity(String userID) {
+        Intent profileIntent = new Intent(MainActivity.this, ProfileActivity.class);
+        profileIntent.putExtra("userID", userID);
+        startActivity(profileIntent);
     }
 }

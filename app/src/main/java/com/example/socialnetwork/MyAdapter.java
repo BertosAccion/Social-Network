@@ -1,6 +1,7 @@
 package com.example.socialnetwork;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -33,13 +34,21 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
+    public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, final int i) {
         myViewHolder.username.setText(posts.get(i).getUsername());
         myViewHolder.date.setText(posts.get(i).getDate());
         myViewHolder.time.setText(posts.get(i).getTime());
         myViewHolder.description.setText(posts.get(i).getDescription());
         Picasso.get().load(posts.get(i).getPostimage()).into(myViewHolder.postimage);
         Picasso.get().load(posts.get(i).getProfileimage()).into(myViewHolder.profileimage);
+        myViewHolder.profileimage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent profileIntent = new Intent(ctx, ProfileActivity.class);
+                profileIntent.putExtra("userID", posts.get(i).getUid());
+                ctx.startActivity(profileIntent);
+            }
+        });
     }
 
     @Override
