@@ -250,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
     private void SendUserToSetupActivity() {
         Intent setupIntent = new Intent(MainActivity.this, SetupActivity.class);
         setupIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        setupIntent.putExtra("layout", "1");
+        //setupIntent.putExtra("layout", "1");
         startActivity(setupIntent);
         finish();
 

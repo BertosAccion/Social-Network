@@ -26,7 +26,7 @@
     <ImageView
         android:id="@+id/profile_header"
         android:layout_width="match_parent"
-        android:layout_height="145dp"
+        android:layout_height="161dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="54dp"
@@ -35,13 +35,13 @@
 
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_pic"
+        android:id="@+id/user_profile_pic"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="19dp"
-        android:layout_marginBottom="531dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginBottom="567dp"
         android:src="@drawable/profile"
         app:civ_border_color="@color/colorPrimaryDark"
         app:civ_border_width="2dp" />
@@ -53,6 +53,17 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
         android:layout_marginTop="350dp" />
+
+    <TextView
+        android:id="@+id/profile_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="123dp"
+        android:layout_marginTop="69dp"
+        android:text="Username"
+        android:textSize="18sp" />
 
 
 </RelativeLayout>
