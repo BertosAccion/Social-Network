@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -35,6 +37,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private CircleImageView navProfilePic, postProfilePic;
     private TextView navUsername;
     private ImageButton addNewPost;
+    private FloatingActionButton fab;
 
     private FirebaseAuth mAuth;
     private DatabaseReference usersRef;
@@ -77,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
         postsRef = FirebaseDatabase.getInstance().getReference().child("Posts");
         currentUserId = mAuth.getCurrentUser().getUid();
 
+        fab = findViewById(R.id.fab);
+
         mToolbar = findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Inicio");
@@ -93,12 +100,11 @@ public class MainActivity extends AppCompatActivity {
         navUsername = navView.findViewById(R.id.nav_user_full_name);
         rl = navView.findViewById(R.id.layout_header);
 
-        posts = new ArrayList<Posts>();
+        posts = new ArrayList<>();
         postList = findViewById(R.id.all_users_post_list);
         postProfilePic = postList.findViewById(R.id.post_profile_image);
         postList.setLayoutManager(new LinearLayoutManager(this));
 
-        //postList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(true);
         linearLayoutManager.setReverseLayout(true);
@@ -116,41 +122,9 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 ArrayList<Posts> arrangedPosts = arrangePosts(posts);
-
                 adapter = new MyAdapter(MainActivity.this, arrangedPosts);
                 postList.setAdapter(adapter);
 
-                /*for (Posts urlProfile : arrangedPosts){
-                    postProfilePic.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            sendUserToProfileActivity("DDDD");
-                        }
-                    });
-                }*/
-
-            }
-
-            private ArrayList<Posts> arrangePosts(ArrayList<Posts> posts) {
-                ArrayList<String> arrangeDateTime = new ArrayList<>();
-                for (Posts post : posts){
-                    String combo = post.getDate() + " " + post.getTime();
-                    arrangeDateTime.add(combo);
-                }
-                Collections.sort(arrangeDateTime);
-                System.out.println(arrangeDateTime);
-
-                ArrayList<Posts> arrangedPosts = new ArrayList<>();
-                for (String dateTime : arrangeDateTime){
-                    String[] aux = dateTime.split(" ");
-                    for(Posts post : posts){
-                        if (aux[0].equals(post.getDate()) && aux[1].equals(post.getTime())){
-                            arrangedPosts.add(post);
-                        }
-                    }
-                }
-
-                return arrangedPosts;
             }
 
             @Override
@@ -202,12 +176,35 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        addNewPost.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendUserToPostActivity();
             }
         });
+    }
+
+
+    private ArrayList<Posts> arrangePosts(@NotNull ArrayList<Posts> posts) {
+        ArrayList<String> arrangeDateTime = new ArrayList<>();
+        for (Posts post : posts){
+            String combo = post.getDate() + " " + post.getTime();
+            arrangeDateTime.add(combo);
+        }
+        Collections.sort(arrangeDateTime);
+        System.out.println(arrangeDateTime);
+
+        ArrayList<Posts> arrangedPosts = new ArrayList<>();
+        for (String dateTime : arrangeDateTime){
+            String[] aux = dateTime.split(" ");
+            for(Posts post : posts){
+                if (aux[0].equals(post.getDate()) && aux[1].equals(post.getTime())){
+                    arrangedPosts.add(post);
+                }
+            }
+        }
+
+        return arrangedPosts;
     }
 
     private void sendUserToPostActivity() {

@@ -41,12 +41,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
         myViewHolder.description.setText(posts.get(i).getDescription());
         Picasso.get().load(posts.get(i).getPostimage()).into(myViewHolder.postimage);
         Picasso.get().load(posts.get(i).getProfileimage()).into(myViewHolder.profileimage);
-        myViewHolder.profileimage.setOnClickListener(new View.OnClickListener() {
+        if (!(this.ctx instanceof ProfileActivity)){
+            myViewHolder.profileimage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent profileIntent = new Intent(ctx, ProfileActivity.class);
+                    profileIntent.putExtra("userID", posts.get(i).getUid());
+                    ctx.startActivity(profileIntent);
+                }
+            });
+        }
+        myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent profileIntent = new Intent(ctx, ProfileActivity.class);
-                profileIntent.putExtra("userID", posts.get(i).getUid());
-                ctx.startActivity(profileIntent);
             }
         });
     }

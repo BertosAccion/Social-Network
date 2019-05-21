@@ -17,25 +17,75 @@
         android:layout_height="100dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="11dp"
-        android:layout_marginBottom="567dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="612dp"
         android:src="@drawable/profile"
         app:civ_border_color="@color/colorPrimaryDark"
         app:civ_border_width="2dp" />
 
     <TextView
+        android:id="@+id/detail_post_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="205dp"
-        android:textSize="20sp"/>
+        android:layout_marginStart="110dp"
+        android:layout_marginTop="80dp"
+        android:text="TextView" />
 
-    <ImageView
+    <TextView
+        android:id="@+id/detail_post_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="145dp"
+        android:layout_marginEnd="224dp"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/detail_post_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="144dp"
+        android:layout_marginEnd="131dp"
+        android:text="TextView" />
+
+    <LinearLayout
+        android:layout_width="392dp"
+        android:layout_height="613dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="200dp" />
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="182dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/detail_post_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/detail_post_postimage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/detail_post_dropdown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="126dp"
+        android:layout_marginEnd="55dp"
+        android:text="..."
+        android:textColor="@android:color/black"
+        android:textSize="30sp"
+        android:onClick="showPopup"/>
+
 </RelativeLayout>
