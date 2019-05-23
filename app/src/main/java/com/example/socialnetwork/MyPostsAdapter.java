@@ -90,7 +90,7 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.MyViewHo
                         }
                     });
                 } else {
-
+                    System.out.println("HAHAHAHAHAHA");
                 }
             }
         });
