@@ -35,27 +35,23 @@ public class ProfileActivity extends AppCompatActivity {
     private RecyclerView postList;
     private Toolbar mToolbar;
 
-    public ArrayList<Posts> posts;
+    private ArrayList<Posts> posts;
 
     private CircleImageView profilePic;
     private TextView username;
     private ImageButton addNewPost;
     private ImageView profileHeader;
 
-    private FirebaseAuth mAuth;
-    private DatabaseReference userRef;
-    public DatabaseReference postsRef;
+    private DatabaseReference userRef, ref, postsRef;
     private Query query;
-    public DatabaseReference ref;
     private String currentUserId;
 
-    public MyAdapter adapter;
+    private MyPostsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        mAuth = FirebaseAuth.getInstance();
         ref = FirebaseDatabase.getInstance().getReference();
         postsRef = ref.child("Posts");
 
@@ -123,7 +119,7 @@ public class ProfileActivity extends AppCompatActivity {
                 }
 
                 ArrayList<Posts> arrangedPosts = arrangePosts(posts);
-                adapter = new MyAdapter(ProfileActivity.this, arrangedPosts);
+                adapter = new MyPostsAdapter(ProfileActivity.this, arrangedPosts);
                 postList.setAdapter(adapter);
 
             }

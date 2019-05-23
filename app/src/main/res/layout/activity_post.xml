@@ -8,7 +8,7 @@
 
     <include
         android:id="@+id/update_post_page_toolbar"
-        layout="@layout/app_bar_layout"/>
+        layout="@layout/app_bar_layout" />
 
     <EditText
         android:id="@+id/text_post"

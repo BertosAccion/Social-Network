@@ -3,10 +3,10 @@ package com.example.socialnetwork;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -31,7 +31,6 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.HashMap;
-import java.util.Set;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -41,7 +40,7 @@ public class SetupActivity extends AppCompatActivity {
     private Button saveInformationButton;
     private CircleImageView profileImage;
     private ProgressDialog loadingBar;
-    private Spinner teamSpinner;
+    private Spinner teamSpinner, levelSpinner;
 
     private FirebaseAuth mAuth;
     private DatabaseReference usersRef;
@@ -61,6 +60,7 @@ public class SetupActivity extends AppCompatActivity {
         saveInformationButton = findViewById(R.id.save_setup_info);
         profileImage = findViewById(R.id.setup_user_profile_pic);
         teamSpinner = findViewById(R.id.team_spinner);
+        levelSpinner = findViewById(R.id.level_spinner);
 
         loadingBar = new ProgressDialog(this);
 
@@ -173,6 +173,7 @@ public class SetupActivity extends AppCompatActivity {
         String fullname = fullName.getText().toString();
         String country = countryName.getText().toString();
         String team = teamSpinner.getSelectedItem().toString();
+        String level = levelSpinner.getSelectedItem().toString();
 
         if (TextUtils.isEmpty(username)){
             Toast.makeText(this, "Por favor, escriba su nombre", Toast.LENGTH_SHORT).show();
@@ -195,7 +196,7 @@ public class SetupActivity extends AppCompatActivity {
             userMap.put("country", country);
             userMap.put("gender", "default gender value ^^");
             userMap.put("dob", "default date of birth value ^^");
-            userMap.put("level", "default level value ^^");
+            userMap.put("level", level);
             userMap.put("team", team);
             usersRef.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
                 @Override

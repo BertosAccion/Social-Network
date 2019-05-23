@@ -2,13 +2,10 @@ package com.example.socialnetwork;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.media.Image;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,21 +13,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -84,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null){
+        if (currentUser != null) {
             SendUserToMainActivity();
         }
     }
@@ -93,9 +81,9 @@ public class LoginActivity extends AppCompatActivity {
         String loginEmail = userEmail.getText().toString();
         String loginPassword = userPassword.getText().toString();
 
-        if (TextUtils.isEmpty(loginEmail)){
+        if (TextUtils.isEmpty(loginEmail)) {
             Toast.makeText(this, "Por favor, introduzca un email", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(loginPassword)){
+        } else if (TextUtils.isEmpty(loginPassword)) {
             Toast.makeText(this, "Por favor, introduzca la contraseña", Toast.LENGTH_SHORT).show();
         } else {
 
@@ -106,20 +94,20 @@ public class LoginActivity extends AppCompatActivity {
 
             mAuth.signInWithEmailAndPassword(loginEmail, loginPassword)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()){
-                        SendUserToMainActivity();
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                SendUserToMainActivity();
 
-                        Toast.makeText(LoginActivity.this, "Sesión iniciada correctamente", Toast.LENGTH_SHORT).show();
-                        loadingBar.dismiss();
-                    } else {
-                        String errorMessage = task.getException().getMessage();
-                        Toast.makeText(LoginActivity.this, "Error: " + errorMessage, Toast.LENGTH_SHORT).show();
-                        loadingBar.dismiss();
-                    }
-                }
-            });
+                                Toast.makeText(LoginActivity.this, "Sesión iniciada correctamente", Toast.LENGTH_SHORT).show();
+                                loadingBar.dismiss();
+                            } else {
+                                String errorMessage = task.getException().getMessage();
+                                Toast.makeText(LoginActivity.this, "Error: " + errorMessage, Toast.LENGTH_SHORT).show();
+                                loadingBar.dismiss();
+                            }
+                        }
+                    });
         }
     }
 

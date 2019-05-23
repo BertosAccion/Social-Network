@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorFriends"
+    tools:context=".FindFriendsActivity">
+
+    <include
+        android:id="@+id/find_friends_page_toolbar"
+        layout="@layout/app_bar_layout" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/find_friends_page_toolbar"
+        android:layout_marginTop="15dp">
+
+        <TextView
+            android:id="@+id/simple_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Buscar usuarios o amigos que conozcas"
+            android:textColor="@android:color/background_light"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/find_friends_box"
+            android:layout_width="375dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/simple_text"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/inputs"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/find_friends_text"
+                android:layout_width="285dp"
+                android:layout_height="70dp"
+                android:layout_marginLeft="25dp" />
+
+            <ImageButton
+                android:id="@+id/find_friends_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/search" />
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/find_friends_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/find_friends_box"
+            android:layout_marginTop="25dp" />
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

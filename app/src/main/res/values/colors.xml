@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#E20C0C</color>
     <color name="colorAccent">#ECECEC</color>
     <color name="colorPosts">#9E9A9A</color>
+    <color name="colorFriends">#696767</color>
+    <color name="colorAux">#FFDDDDDD</color>
 </resources>

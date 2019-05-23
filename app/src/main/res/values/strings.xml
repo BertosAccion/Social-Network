@@ -10,4 +10,49 @@
         <item><font fgcolor='#FFFFFF'>Instinto</font></item>
         <item><font fgcolor='#FFFFFF'>Valor</font></item>
     </string-array>
+
+    <string name="level_prompt">¿Qué nivel eres?</string>
+    <string-array name="level">
+        <item><font fgcolor="#FFFFFF">¿Qué nivel eres?</font></item>
+        <item><font fgcolor="#FFFFFF">1</font></item>
+        <item><font fgcolor="#FFFFFF">2</font></item>
+        <item><font fgcolor="#FFFFFF">3</font></item>
+        <item><font fgcolor="#FFFFFF">4</font></item>
+        <item><font fgcolor="#FFFFFF">5</font></item>
+        <item><font fgcolor="#FFFFFF">6</font></item>
+        <item><font fgcolor="#FFFFFF">7</font></item>
+        <item><font fgcolor="#FFFFFF">8</font></item>
+        <item><font fgcolor="#FFFFFF">9</font></item>
+        <item><font fgcolor="#FFFFFF">10</font></item>
+        <item><font fgcolor="#FFFFFF">11</font></item>
+        <item><font fgcolor="#FFFFFF">12</font></item>
+        <item><font fgcolor="#FFFFFF">13</font></item>
+        <item><font fgcolor="#FFFFFF">14</font></item>
+        <item><font fgcolor="#FFFFFF">15</font></item>
+        <item><font fgcolor="#FFFFFF">16</font></item>
+        <item><font fgcolor="#FFFFFF">17</font></item>
+        <item><font fgcolor="#FFFFFF">18</font></item>
+        <item><font fgcolor="#FFFFFF">19</font></item>
+        <item><font fgcolor="#FFFFFF">20</font></item>
+        <item><font fgcolor="#FFFFFF">21</font></item>
+        <item><font fgcolor="#FFFFFF">22</font></item>
+        <item><font fgcolor="#FFFFFF">23</font></item>
+        <item><font fgcolor="#FFFFFF">24</font></item>
+        <item><font fgcolor="#FFFFFF">25</font></item>
+        <item><font fgcolor="#FFFFFF">26</font></item>
+        <item><font fgcolor="#FFFFFF">27</font></item>
+        <item><font fgcolor="#FFFFFF">28</font></item>
+        <item><font fgcolor="#FFFFFF">29</font></item>
+        <item><font fgcolor="#FFFFFF">30</font></item>
+        <item><font fgcolor="#FFFFFF">31</font></item>
+        <item><font fgcolor="#FFFFFF">32</font></item>
+        <item><font fgcolor="#FFFFFF">33</font></item>
+        <item><font fgcolor="#FFFFFF">34</font></item>
+        <item><font fgcolor="#FFFFFF">35</font></item>
+        <item><font fgcolor="#FFFFFF">36</font></item>
+        <item><font fgcolor="#FFFFFF">37</font></item>
+        <item><font fgcolor="#FFFFFF">38</font></item>
+        <item><font fgcolor="#FFFFFF">39</font></item>
+        <item><font fgcolor="#FFFFFF">40</font></item>
+    </string-array>
 </resources>

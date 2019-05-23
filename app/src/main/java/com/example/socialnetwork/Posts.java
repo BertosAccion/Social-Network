@@ -1,7 +1,5 @@
 package com.example.socialnetwork;
 
-import android.text.TextUtils;
-
 public class Posts {
     public String date, description, postimage, profileimage, time, uid, username;
     public boolean type;

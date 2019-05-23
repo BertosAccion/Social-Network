@@ -1,51 +1,37 @@
 package com.example.socialnetwork;
 
 import android.content.Intent;
-import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
-import java.util.TimeZone;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -68,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference usersRef;
     public DatabaseReference postsRef;
     private String currentUserId;
-    public MyAdapter adapter;
+    public MyPostsAdapter adapter;
 
     private RelativeLayout rl;
 
@@ -122,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 ArrayList<Posts> arrangedPosts = arrangePosts(posts);
-                adapter = new MyAdapter(MainActivity.this, arrangedPosts);
+                adapter = new MyPostsAdapter(MainActivity.this, arrangedPosts);
                 postList.setAdapter(adapter);
 
             }
@@ -187,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Posts> arrangePosts(@NotNull ArrayList<Posts> posts) {
         ArrayList<String> arrangeDateTime = new ArrayList<>();
-        for (Posts post : posts){
+        for (Posts post : posts) {
             String combo = post.getDate() + " " + post.getTime();
             arrangeDateTime.add(combo);
         }
@@ -195,10 +181,10 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(arrangeDateTime);
 
         ArrayList<Posts> arrangedPosts = new ArrayList<>();
-        for (String dateTime : arrangeDateTime){
+        for (String dateTime : arrangeDateTime) {
             String[] aux = dateTime.split(" ");
-            for(Posts post : posts){
-                if (aux[0].equals(post.getDate()) && aux[1].equals(post.getTime())){
+            for (Posts post : posts) {
+                if (aux[0].equals(post.getDate()) && aux[1].equals(post.getTime())) {
                     arrangedPosts.add(post);
                 }
             }
@@ -288,7 +274,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.nav_find_friends:
-                Toast.makeText(this, "Encontrar amigos", Toast.LENGTH_SHORT).show();
+                sendUserToFindFriendsActivity();
                 break;
 
             case R.id.nav_messages:
@@ -306,6 +292,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    private void sendUserToFindFriendsActivity() {
+        Intent findFriendsIntent = new Intent(MainActivity.this, FindFriendsActivity.class);
+        startActivity(findFriendsIntent);
     }
 
     public void sendUserToProfileActivity(String userID) {
