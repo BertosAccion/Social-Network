@@ -11,10 +11,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,8 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton fab;
 
     private FirebaseAuth mAuth;
-    private DatabaseReference usersRef;
-    public DatabaseReference postsRef;
+    private DatabaseReference usersRef, postsRef;
     private String currentUserId;
     public MyPostsAdapter adapter;
 
@@ -110,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<Posts> arrangedPosts = arrangePosts(posts);
                 adapter = new MyPostsAdapter(MainActivity.this, arrangedPosts);
                 postList.setAdapter(adapter);
-
             }
 
             @Override

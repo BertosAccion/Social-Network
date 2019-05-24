@@ -168,6 +168,7 @@ public class PostActivity extends AppCompatActivity {
                     if (downloadUrl != null) {
                         postMap.put("postimage", downloadUrl);
                     }
+                    postMap.put("likes", 0);
                     postMap.put("username", username);
                     postMap.put("profileimage", profileImage);
 
