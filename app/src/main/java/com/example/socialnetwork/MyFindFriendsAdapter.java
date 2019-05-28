@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -57,6 +58,7 @@ public class MyFindFriendsAdapter extends RecyclerView.Adapter<MyFindFriendsAdap
 
         TextView username, level, team;
         CircleImageView profileimage;
+        LinearLayout friendLayout;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -64,6 +66,7 @@ public class MyFindFriendsAdapter extends RecyclerView.Adapter<MyFindFriendsAdap
             level = itemView.findViewById(R.id.all_users_lvl);
             team = itemView.findViewById(R.id.all_users_team);
             profileimage = itemView.findViewById(R.id.all_users_profile_image);
+            friendLayout = itemView.findViewById(R.id.all_users_background);
         }
     }
 

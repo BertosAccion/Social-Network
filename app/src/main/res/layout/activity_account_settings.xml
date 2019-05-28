@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AccountSettingsActivity">
+
+    <include
+        android:id="@+id/settings_toolbar"
+        layout="@layout/app_bar_layout"></include>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="727dp"
+        android:layout_below="@+id/settings_toolbar"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="-18dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/settings_profile_image"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/profile" />
+
+            <TextView
+
+                android:id="@+id/text1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/settings_profile_image"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:text="Nombre de usuario"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/settings_username"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/text1"
+                android:layout_margin="5dp"
+                android:background="@drawable/inputs" />
+
+            <TextView
+
+                android:id="@+id/text2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/settings_username"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:text="Nombre completo"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/settings_fullname"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/text2"
+                android:layout_margin="5dp"
+                android:background="@drawable/inputs" />
+
+            <TextView
+
+                android:id="@+id/text3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/settings_fullname"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:text="Fecha de nacimiento"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/settings_dob"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/text3"
+                android:layout_margin="5dp"
+                android:background="@drawable/inputs" />
+
+            <TextView
+                android:id="@+id/text4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/settings_dob"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:text="País de residencia"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/settings_country"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/text4"
+                android:layout_margin="5dp"
+                android:background="@drawable/inputs" />
+
+            <TextView
+
+                android:id="@+id/text5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/settings_country"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:text="Género"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/settings_gender"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/text5"
+                android:layout_margin="5dp"
+                android:background="@drawable/inputs" />
+
+            <TextView
+
+                android:id="@+id/text6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/settings_gender"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:text="Equipo"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/settings_team"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/text6"
+                android:layout_margin="5dp"
+                android:background="@drawable/inputs" />
+
+            <TextView
+
+                android:id="@+id/text7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/settings_team"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:text="Nivel de entrenador"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/settings_level"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/text7"
+                android:layout_margin="5dp"
+                android:background="@drawable/inputs" />
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

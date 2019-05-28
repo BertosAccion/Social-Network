@@ -31,19 +31,6 @@
                 app:stackFromEnd="true" />
         </FrameLayout>
 
-        <ImageButton
-            android:id="@+id/add_new_post_button"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="4dp"
-            android:layout_marginRight="8dp"
-            android:background="@color/colorPrimary"
-            android:baselineAlignBottom="false"
-            android:focusableInTouchMode="false"
-            android:scaleType="centerCrop"
-            android:src="@drawable/add_post_high" />
-
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"

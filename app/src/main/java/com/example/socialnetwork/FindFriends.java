@@ -1,7 +1,9 @@
 package com.example.socialnetwork;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class FindFriends {
-    public String profileimage, username, level, team;
+    public String profileimage, username, level, team, uid;
 
     public FindFriends() {
     }

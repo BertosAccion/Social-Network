@@ -11,12 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -161,7 +159,6 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -282,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.nav_settings:
-                Toast.makeText(this, "Ajustes", Toast.LENGTH_SHORT).show();
+                sendUserToSettingsActivity(currentUserId);
                 break;
 
             case R.id.nav_logout:
@@ -303,5 +300,11 @@ public class MainActivity extends AppCompatActivity {
         Intent profileIntent = new Intent(MainActivity.this, ProfileActivity.class);
         profileIntent.putExtra("userID", userID);
         startActivity(profileIntent);
+    }
+
+    public void sendUserToSettingsActivity(String userID) {
+        Intent settingsIntent = new Intent(MainActivity.this, AccountSettingsActivity.class);
+        settingsIntent.putExtra("userID", userID);
+        startActivity(settingsIntent);
     }
 }

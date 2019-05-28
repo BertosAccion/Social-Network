@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustResize">
-        <activity android:name=".FindFriendsActivity"></activity>
+        <activity android:name=".AccountSettingsActivity"></activity>
+        <activity android:name=".FindFriendsActivity" />
         <activity android:name=".DetailPostActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".PostActivity" />
