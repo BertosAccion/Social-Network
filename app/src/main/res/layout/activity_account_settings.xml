@@ -11,11 +11,11 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="727dp"
+        android:layout_height="750dp"
         android:layout_below="@+id/settings_toolbar"
         android:layout_alignParentStart="true"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="-18dp">
+        android:layout_marginTop="-5dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -46,8 +46,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_below="@id/text1"
-                android:layout_margin="5dp"
-                android:background="@drawable/inputs" />
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/inputs"
+                android:paddingLeft="20dp" />
 
             <TextView
 
@@ -62,6 +65,7 @@
                 android:textStyle="bold" />
 
             <EditText
+                android:paddingLeft="20dp"
                 android:id="@+id/settings_fullname"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -82,6 +86,7 @@
                 android:textStyle="bold" />
 
             <EditText
+                android:paddingLeft="20dp"
                 android:id="@+id/settings_dob"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -101,6 +106,7 @@
                 android:textStyle="bold" />
 
             <EditText
+                android:paddingLeft="20dp"
                 android:id="@+id/settings_country"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -121,6 +127,7 @@
                 android:textStyle="bold" />
 
             <EditText
+                android:paddingLeft="20dp"
                 android:id="@+id/settings_gender"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -141,6 +148,7 @@
                 android:textStyle="bold" />
 
             <EditText
+                android:paddingLeft="20dp"
                 android:id="@+id/settings_team"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -161,12 +169,36 @@
                 android:textStyle="bold" />
 
             <EditText
+                android:paddingLeft="20dp"
                 android:id="@+id/settings_level"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_below="@id/text7"
                 android:layout_margin="5dp"
                 android:background="@drawable/inputs" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/settings_level"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/settings_update_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/settings_level"
+                    android:text="Guardar" />
+
+                <Button
+                    android:id="@+id/settings_reset_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/settings_level"
+                    android:text="Resetear campos" />
+            </LinearLayout>
         </RelativeLayout>
     </ScrollView>
 

@@ -90,8 +90,8 @@ public class SetupActivity extends AppCompatActivity {
         usersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    if (dataSnapshot.hasChild("profileimage")){
+                if (dataSnapshot.exists()) {
+                    if (dataSnapshot.hasChild("profileimage")) {
                         String image = dataSnapshot.child("profileimage").getValue().toString();
                         Picasso.get().load(image).placeholder(R.drawable.profile).into(profileImage);
                     } else {
@@ -112,7 +112,7 @@ public class SetupActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode==gallery_pic && resultCode==RESULT_OK && data!=null){
+        if (requestCode == gallery_pic && resultCode == RESULT_OK && data != null) {
             Uri imageUri = data.getData();
 
             CropImage.activity(imageUri).setGuidelines(CropImageView.Guidelines.ON)
@@ -120,10 +120,10 @@ public class SetupActivity extends AppCompatActivity {
                     .start(this);
         }
 
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
 
-            if (resultCode == RESULT_OK){
+            if (resultCode == RESULT_OK) {
 
                 loadingBar.setTitle("Guardando imagen de perfil...");
                 loadingBar.setMessage("por favor, espera unos segundos");
@@ -135,7 +135,7 @@ public class SetupActivity extends AppCompatActivity {
                 filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                        if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             Toast.makeText(SetupActivity.this, "Foto de perfil actualizada correctamente", Toast.LENGTH_SHORT).show();
                             userProfilePicRef.child(currentUserId + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
@@ -144,7 +144,7 @@ public class SetupActivity extends AppCompatActivity {
                                     usersRef.child("profileimage").setValue(downloadUrl).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()){
+                                            if (task.isSuccessful()) {
                                                 //Intent setupIntent = new Intent (SetupActivity.this, SetupActivity.class);
                                                 //startActivity(setupIntent);
                                                 Toast.makeText(SetupActivity.this, "Imagen guardada en la firebase correctamente", Toast.LENGTH_SHORT).show();
@@ -175,11 +175,11 @@ public class SetupActivity extends AppCompatActivity {
         String team = teamSpinner.getSelectedItem().toString();
         String level = levelSpinner.getSelectedItem().toString();
 
-        if (TextUtils.isEmpty(username)){
+        if (TextUtils.isEmpty(username)) {
             Toast.makeText(this, "Por favor, escriba su nombre", Toast.LENGTH_SHORT).show();
-        }else if (TextUtils.isEmpty(fullname)){
+        } else if (TextUtils.isEmpty(fullname)) {
             Toast.makeText(this, "Por favor, escriba su apellido", Toast.LENGTH_SHORT).show();
-        }else if (TextUtils.isEmpty(country)){
+        } else if (TextUtils.isEmpty(country)) {
             Toast.makeText(this, "Por favor, escriba su país de nacimiento", Toast.LENGTH_SHORT).show();
         } else if (team.equals(teamSpinner.getItemAtPosition(0).toString())) {
             Toast.makeText(this, "Por favor, selecciona tu equipo de Pokémon GO", Toast.LENGTH_SHORT).show();
@@ -201,11 +201,11 @@ public class SetupActivity extends AppCompatActivity {
             usersRef.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
                 @Override
                 public void onComplete(@NonNull Task task) {
-                    if (task.isSuccessful()){
+                    if (task.isSuccessful()) {
                         sendUserToMainActivity();
                         Toast.makeText(SetupActivity.this, "Tu cuenta ha sido creada correctamente", Toast.LENGTH_LONG).show();
                         loadingBar.dismiss();
-                    } else{
+                    } else {
                         String errorMessage = task.getException().getMessage();
                         Toast.makeText(SetupActivity.this, "Error: " + errorMessage, Toast.LENGTH_SHORT).show();
                         loadingBar.dismiss();
