@@ -25,6 +25,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -43,7 +44,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView postList;
     private Toolbar mToolbar;
 
-    public ArrayList<Posts> posts;
+    private ArrayList<Posts> posts;
+    private ArrayList<String> friends;
 
     private CircleImageView navProfilePic, postProfilePic;
     private TextView navUsername;
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton fab;
 
     private FirebaseAuth mAuth;
-    private DatabaseReference usersRef, postsRef;
+    private DatabaseReference usersRef, postsRef, friendsRef;
     private String currentUserId;
     public MyPostsAdapter adapter;
 
@@ -66,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
         postsRef = FirebaseDatabase.getInstance().getReference().child("Posts");
         currentUserId = mAuth.getCurrentUser().getUid();
+        friendsRef = FirebaseDatabase.getInstance().getReference().child("Friends").child(currentUserId);
 
         fab = findViewById(R.id.fab);
 
@@ -85,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         navUsername = navView.findViewById(R.id.nav_user_full_name);
         rl = navView.findViewById(R.id.layout_header);
 
+        friends = new ArrayList<>();
         posts = new ArrayList<>();
         postList = findViewById(R.id.all_users_post_list);
         postProfilePic = postList.findViewById(R.id.post_profile_image);
@@ -98,14 +102,50 @@ public class MainActivity extends AppCompatActivity {
 
         addNewPost = findViewById(R.id.add_new_post_button);
 
-        postsRef.addValueEventListener(new ValueEventListener() {
+        friendsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    friends.add(dataSnapshot1.getKey());
+                }
+                System.out.println(friends.get(0));
+                for (String friend : friends){
+                    Query query = postsRef.orderByChild("uid").equalTo(friend);
+                    query.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            posts.clear();
+                            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                Posts post = dataSnapshot1.getValue(Posts.class);
+                                posts.add(post);
+                            }
+                            ArrayList<Posts> arrangedPosts = arrangePosts(posts);
+                            adapter = new MyPostsAdapter(MainActivity.this, arrangedPosts);
+                            postList.setAdapter(adapter);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        /*postsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                posts.clear();
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     Posts post = dataSnapshot1.getValue(Posts.class);
                     posts.add(post);
                 }
-
                 ArrayList<Posts> arrangedPosts = arrangePosts(posts);
                 adapter = new MyPostsAdapter(MainActivity.this, arrangedPosts);
                 postList.setAdapter(adapter);
@@ -115,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(MainActivity.this, "Oops... algo ha ido mal", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
         usersRef.child(currentUserId).addValueEventListener(new ValueEventListener() {
             @Override
@@ -170,6 +210,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Posts> arrangePosts(@NotNull ArrayList<Posts> posts) {
         ArrayList<String> arrangeDateTime = new ArrayList<>();
+        System.out.println(friends);
         for (Posts post : posts) {
             String combo = post.getDate() + " " + post.getTime();
             arrangeDateTime.add(combo);
@@ -193,7 +234,6 @@ public class MainActivity extends AppCompatActivity {
     private void sendUserToPostActivity() {
         Intent addNewPostIntent = new Intent(MainActivity.this, PostActivity.class);
         startActivity(addNewPostIntent);
-        finish();
     }
 
 

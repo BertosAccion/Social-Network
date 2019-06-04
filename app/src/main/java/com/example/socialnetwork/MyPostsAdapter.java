@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,7 +44,7 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.MyViewHo
     Context ctx;
     ArrayList<Posts> posts;
     FirebaseAuth mAuth;
-    DatabaseReference ref, likesRef, postsRef;
+    DatabaseReference ref, likesRef, postsRef, delePostRef;
     String currentUserId;
     boolean liking;
 
@@ -179,16 +180,6 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.MyViewHo
         popup.show();
     }
 
-    public void clear() {
-        int size = posts.size();
-        if (size > 0) {
-            for (int i = 0; i < size; i++) {
-                posts.remove(0);
-            }
-            notifyItemRangeRemoved(0, size);
-        }
-    }
-
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
@@ -198,13 +189,13 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.MyViewHo
             case R.id.delete_post:
                 AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
                 builder.setMessage("¿Estás seguro?").setCancelable(false)
-                        .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                        .setPositiveButton(Html.fromHtml("<font color='#000000'>Sí</font>"), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 postsRef.removeValue();
                             }
                         })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        .setNegativeButton(Html.fromHtml("<font color='#000000'>No</font>"), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.cancel();

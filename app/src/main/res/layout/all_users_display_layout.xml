@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/all_users_background"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -45,6 +46,14 @@
             android:textAlignment="textStart"
             android:textColor="@android:color/background_light"
             android:textSize="15sp" />
+
+        <ImageView
+            android:layout_marginLeft="250dp"
+            android:id="@+id/all_users_add_friend"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:srcCompat="@drawable/add_friend" />
+
     </LinearLayout>
 
 </LinearLayout>

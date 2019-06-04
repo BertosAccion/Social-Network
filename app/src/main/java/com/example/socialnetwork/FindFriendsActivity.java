@@ -81,6 +81,8 @@ public class FindFriendsActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     FindFriends friend = dataSnapshot1.getValue(FindFriends.class);
+                    friend.setUid(dataSnapshot1.getKey());
+                    System.out.println(friend.getUid());
                     friends.add(friend);
                 }
                 searchList.setAdapter(adapter);

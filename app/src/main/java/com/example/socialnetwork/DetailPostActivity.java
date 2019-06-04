@@ -78,19 +78,19 @@ public class DetailPostActivity extends AppCompatActivity implements PopupMenu.O
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (aBoolean){
                     Posts post = dataSnapshot.getValue(Posts.class);
-                    Picasso.get().load(post.getPostimage()).into(detailPostImage);
-                    Picasso.get().load(post.getProfileimage()).placeholder(R.drawable.profile).into(detailPostProfilePic);
-                    detailPostUsername.setText(post.getUsername());
-                    detailPostDat.setText(post.getDate());
-                    detailPostTime.setText(post.getTime());
-                    detailPostDescription.setText(post.getDescription());
-                } else {
-                    Intent mainIntent = new Intent(DetailPostActivity.this, MainActivity.class);
-                    startActivity(mainIntent);
-                    finish();
-                }
+                    if (post != null){
+                        Picasso.get().load(post.getPostimage()).into(detailPostImage);
+                        Picasso.get().load(post.getProfileimage()).placeholder(R.drawable.profile).into(detailPostProfilePic);
+                        detailPostUsername.setText(post.getUsername());
+                        detailPostDat.setText(post.getDate());
+                        detailPostTime.setText(post.getTime());
+                        detailPostDescription.setText(post.getDescription());
+                    } else {
+                        Intent mainIntent = new Intent(DetailPostActivity.this, MainActivity.class);
+                        startActivity(mainIntent);
+                        finish();
+                    }
             }
 
             @Override

@@ -8,11 +8,20 @@ public class FindFriends {
     public FindFriends() {
     }
 
-    public FindFriends(String profileimage, String username, String level, String team) {
+    public FindFriends(String profileimage, String username, String level, String team, String uid) {
+        this.uid = uid;
         this.profileimage = profileimage;
         this.username = username;
         this.level = level;
         this.team = team;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getProfileimage() {
